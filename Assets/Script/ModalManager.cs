@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System;
 
 public class ModalManager : MonoBehaviour
 {
@@ -17,6 +18,8 @@ public class ModalManager : MonoBehaviour
 
     private string currentItemKey; 
 
+        private Action onChoiceCallback;
+
     void Start()
     {
         if (canvasGroup != null)
@@ -27,8 +30,10 @@ public class ModalManager : MonoBehaviour
         }
     }
 
-    public void ShowModal(string itemKey)
+    public void ShowModal(string itemKey, Action onChoice)
     {
+        onChoiceCallback = onChoice;
+
         currentItemKey = itemKey; // Simpan kunci item yang sedang ditampilkan
         modalPanel.SetActive(true);
 
@@ -42,12 +47,14 @@ public class ModalManager : MonoBehaviour
         expensiveButton.onClick.AddListener(() =>
         {
             SavePlayerChoice("premium");
+            onChoiceCallback?.Invoke(); 
             StartCoroutine(HideModal());
         });
 
         cheapButton.onClick.AddListener(() =>
         {
             SavePlayerChoice("murah");
+            onChoiceCallback?.Invoke(); 
             StartCoroutine(HideModal());
         });
 

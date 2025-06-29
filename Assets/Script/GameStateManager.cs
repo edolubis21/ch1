@@ -37,10 +37,8 @@ public class GameStateManager : MonoBehaviour
     {
         string json = JsonUtility.ToJson(playerChoices, true);
         File.WriteAllText(path, json);
-        Debug.Log("Pilihan pemain disimpan ke: " + path);
-                  Debug.Log("==============" );
         LoadChoices();
-          Debug.Log("==============" );
+
     }
 
     public void LoadChoices()
@@ -49,11 +47,6 @@ public class GameStateManager : MonoBehaviour
         {
             string json = File.ReadAllText(path);
             playerChoices = JsonUtility.FromJson<PlayerChoiceData>(json);
-            Debug.Log("playerChoices.chair: " + playerChoices.chair);
-            Debug.Log("playerChoices.employee: " + playerChoices.employee);
-            Debug.Log("playerChoices.machine: " + playerChoices.machine);
-            Debug.Log("playerChoices.accessoris: " + playerChoices.accessoris);
-            Debug.Log("Pilihan pemain dimuat dari: " + path);
         }
         else
         {
@@ -70,5 +63,18 @@ public class GameStateManager : MonoBehaviour
             Debug.Log("Data pilihan dihapus.");
         }
         playerChoices = new PlayerChoiceData();
+    }
+
+
+      public int GetChoiceByKey(string key)
+    {
+        return key switch
+        {
+            "chair" => playerChoices.chair,
+            "employee" => playerChoices.employee,
+            "machine" => playerChoices.machine,
+            "accessoris" => playerChoices.accessoris,
+            _ => 0 // default jika key tidak cocok
+        };
     }
 }
